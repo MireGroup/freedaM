@@ -1,0 +1,2539 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freedam - Регистрация</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #8a2be2;
+            --primary-dark: #6a1cb0;
+            --primary-light: #9d4edd;
+            --dark: #0a0a0a;
+            --dark-card: #1a1a1a;
+            --dark-hover: #2a2a2a;
+            --light: #ffffff;
+            --gray: #888;
+            --gray-light: #444;
+            --success: #00ff88;
+            --accent: #ff6b9d;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 107, 157, 0.1) 0%, transparent 20%);
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* Регистрационная страница */
+        .register-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+        
+        .register-card {
+            background: var(--dark-card);
+            border-radius: 20px;
+            padding: 40px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 10px 40px rgba(138, 43, 226, 0.3);
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .logo i {
+            font-size: 42px;
+        }
+        
+        .register-subtitle {
+            color: var(--gray);
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--light);
+            font-weight: 500;
+            font-size: 16px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--gray-light);
+            border-radius: 12px;
+            color: var(--light);
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--gray-light);
+            border-radius: 12px;
+            color: var(--light);
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .form-select option {
+            background: var(--dark-card);
+            color: var(--light);
+        }
+        
+        .form-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        
+        .form-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(138, 43, 226, 0.4);
+        }
+        
+        .form-button:active {
+            transform: translateY(-1px);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .password-strength {
+            height: 4px;
+            background: var(--gray-light);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .strength-meter {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            transition: all 0.3s;
+        }
+        
+        .strength-text {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--gray);
+        }
+        
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 600px) {
+            .register-card {
+                padding: 30px 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .logo {
+                font-size: 28px;
+            }
+            
+            .logo i {
+                font-size: 34px;
+            }
+        }
+        
+        /* Сообщения об ошибках/успехе */
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .error {
+            background: rgba(255, 107, 157, 0.2);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+        
+        .success {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        
+        .info {
+            background: rgba(138, 43, 226, 0.2);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-header">
+                <div class="logo">
+                    <i class="fas fa-dove"></i>
+                    <span>Freedam</span>
+                </div>
+                <p class="register-subtitle">Создайте свой аккаунт</p>
+            </div>
+            
+            <div id="messageContainer"></div>
+            
+            <form id="registerForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Имя</label>
+                        <input type="text" class="form-input" id="firstName" placeholder="Иван" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Фамилия</label>
+                        <input type="text" class="form-input" id="lastName" placeholder="Иванов" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Дата рождения</label>
+                    <input type="date" class="form-input" id="birthDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Пол</label>
+                    <select class="form-select" id="gender" required>
+                        <option value="">Выберите пол</option>
+                        <option value="male">Мужской</option>
+                        <option value="female">Женский</option>
+                        <option value="other">Другой</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Электронная почта</label>
+                    <input type="email" class="form-input" id="email" placeholder="example@mail.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" class="form-input" id="password" placeholder="Минимум 8 символов" minlength="8" required>
+                    <div class="password-strength">
+                        <div class="strength-meter" id="strengthMeter"></div>
+                    </div>
+                    <div class="strength-text" id="strengthText">Введите пароль</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Подтверждение пароля</label>
+                    <input type="password" class="form-input" id="confirmPassword" placeholder="Повторите пароль" required>
+                </div>
+                
+                <button type="submit" class="form-button" id="registerButton">
+                    <span id="buttonText">Зарегистрироваться</span>
+                    <div id="buttonLoader" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Регистрация...
+                    </div>
+                </button>
+            </form>
+            
+            <div class="login-link">
+                Уже есть аккаунт? <a href="#" onclick="showLogin()">Войти</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основное приложение (скрыто до входа) -->
+    <div id="app" style="display: none; width: 100%;">
+        <!-- Здесь будет загружена основная соцсеть -->
+    </div>
+
+    <script>
+        // Имитация сервера и базы данных
+        class ServerAPI {
+            constructor() {
+                this.baseUrl = 'https://api.freedam.com'; // Имитация
+                this.initializeDatabase();
+            }
+            
+            initializeDatabase() {
+                // Инициализация localStorage как базы данных
+                if (!localStorage.getItem('freedam_database')) {
+                    const initialDB = {
+                        users: [],
+                        posts: [],
+                        friendships: [],
+                        messages: [],
+                        groups: [],
+                        channels: []
+                    };
+                    localStorage.setItem('freedam_database', JSON.stringify(initialDB));
+                }
+                
+                if (!localStorage.getItem('freedam_session')) {
+                    localStorage.setItem('freedam_session', JSON.stringify({}));
+                }
+            }
+            
+            // Получить базу данных
+            getDatabase() {
+                return JSON.parse(localStorage.getItem('freedam_database'));
+            }
+            
+            // Сохранить базу данных
+            saveDatabase(db) {
+                localStorage.setItem('freedam_database', JSON.stringify(db));
+                // Имитация отправки на сервер
+                this.syncWithServer(db);
+            }
+            
+            // Имитация синхронизации с сервером
+            syncWithServer(data) {
+                console.log('Синхронизация с сервером:', data);
+                // В реальном приложении здесь был бы fetch/axios запрос
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        console.log('Данные успешно отправлены на сервер');
+                        resolve(true);
+                    }, 500);
+                });
+            }
+            
+            // Регистрация пользователя
+            async registerUser(userData) {
+                const db = this.getDatabase();
+                
+                // Проверка email
+                const emailExists = db.users.some(user => user.email === userData.email);
+                if (emailExists) {
+                    throw new Error('Пользователь с таким email уже существует');
+                }
+                
+                // Генерация уникального ID
+                const userId = this.generateUserId();
+                const accountId = this.generateAccountId();
+                
+                // Создание пользователя
+                const newUser = {
+                    id: userId,
+                    accountId: accountId,
+                    ...userData,
+                    createdAt: new Date().toISOString(),
+                    lastOnline: new Date().toISOString(),
+                    isOnline: true,
+                    city: '',
+                    bio: '',
+                    avatar: '',
+                    coverPhoto: '',
+                    friends: [],
+                    friendRequests: [],
+                    posts: [],
+                    groups: [],
+                    channels: [],
+                    privacy: {
+                        profile: 'public',
+                        friends: 'public',
+                        posts: 'public'
+                    }
+                };
+                
+                // Добавление в базу
+                db.users.push(newUser);
+                this.saveDatabase(db);
+                
+                // Создание сессии
+                this.createSession(newUser);
+                
+                return {
+                    success: true,
+                    user: newUser,
+                    session: this.getSession()
+                };
+            }
+            
+            // Вход пользователя
+            async loginUser(email, password) {
+                const db = this.getDatabase();
+                const user = db.users.find(u => u.email === email && u.password === password);
+                
+                if (!user) {
+                    throw new Error('Неверный email или пароль');
+                }
+                
+                // Обновление статуса онлайн
+                user.isOnline = true;
+                user.lastOnline = new Date().toISOString();
+                this.saveDatabase(db);
+                
+                // Создание сессии
+                this.createSession(user);
+                
+                return {
+                    success: true,
+                    user: user,
+                    session: this.getSession()
+                };
+            }
+            
+            // Создание сессии
+            createSession(user) {
+                const session = {
+                    userId: user.id,
+                    accountId: user.accountId,
+                    token: this.generateToken(),
+                    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+                };
+                localStorage.setItem('freedam_session', JSON.stringify(session));
+                return session;
+            }
+            
+            // Получить текущую сессию
+            getSession() {
+                return JSON.parse(localStorage.getItem('freedam_session'));
+            }
+            
+            // Проверить авторизацию
+            checkAuth() {
+                const session = this.getSession();
+                if (!session || !session.token) return null;
+                
+                // Проверка срока действия токена
+                const expires = new Date(session.expires);
+                if (expires < new Date()) {
+                    localStorage.removeItem('freedam_session');
+                    return null;
+                }
+                
+                return session;
+            }
+            
+            // Выход
+            logout() {
+                const session = this.getSession();
+                if (session) {
+                    // Обновление статуса пользователя
+                    const db = this.getDatabase();
+                    const user = db.users.find(u => u.id === session.userId);
+                    if (user) {
+                        user.isOnline = false;
+                        user.lastOnline = new Date().toISOString();
+                        this.saveDatabase(db);
+                    }
+                }
+                
+                localStorage.removeItem('freedam_session');
+                return { success: true };
+            }
+            
+            // Поиск пользователей
+            async searchUsers(query) {
+                const db = this.getDatabase();
+                const currentSession = this.checkAuth();
+                if (!currentSession) throw new Error('Требуется авторизация');
+                
+                const searchTerm = query.toLowerCase();
+                
+                const results = db.users.filter(user => {
+                    if (user.id === currentSession.userId) return false; // Исключаем текущего пользователя
+                    
+                    const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+                    const email = user.email.toLowerCase();
+                    
+                    return (
+                        fullName.includes(searchTerm) ||
+                        email.includes(searchTerm) ||
+                        user.accountId.toString().includes(searchTerm)
+                    );
+                });
+                
+                return {
+                    success: true,
+                    results: results.map(user => ({
+                        id: user.id,
+                        accountId: user.accountId,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        avatar: user.avatar,
+                        isOnline: user.isOnline,
+                        lastOnline: user.lastOnline
+                    }))
+                };
+            }
+            
+            // Поиск по ID аккаунта
+            async searchByAccountId(accountId) {
+                const db = this.getDatabase();
+                const currentSession = this.checkAuth();
+                if (!currentSession) throw new Error('Требуется авторизация');
+                
+                const user = db.users.find(u => u.accountId === accountId && u.id !== currentSession.userId);
+                
+                return {
+                    success: !!user,
+                    user: user ? {
+                        id: user.id,
+                        accountId: user.accountId,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        avatar: user.avatar,
+                        isOnline: user.isOnline,
+                        lastOnline: user.lastOnline
+                    } : null
+                };
+            }
+            
+            // Получить профиль пользователя
+            async getUserProfile(userId) {
+                const db = this.getDatabase();
+                const currentSession = this.checkAuth();
+                if (!currentSession) throw new Error('Требуется авторизация');
+                
+                const user = db.users.find(u => u.id === userId);
+                if (!user) throw new Error('Пользователь не найден');
+                
+                // Проверка дружбы
+                const isFriend = user.friends.includes(currentSession.userId);
+                const hasFriendRequest = user.friendRequests.includes(currentSession.userId);
+                
+                return {
+                    success: true,
+                    user: {
+                        id: user.id,
+                        accountId: user.accountId,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        birthDate: user.birthDate,
+                        gender: user.gender,
+                        city: user.city,
+                        bio: user.bio,
+                        avatar: user.avatar,
+                        coverPhoto: user.coverPhoto,
+                        createdAt: user.createdAt,
+                        isOnline: user.isOnline,
+                        lastOnline: user.lastOnline,
+                        friendsCount: user.friends.length,
+                        postsCount: user.posts.length,
+                        isFriend: isFriend,
+                        hasFriendRequest: hasFriendRequest
+                    }
+                };
+            }
+            
+            // Отправить запрос в друзья
+            async sendFriendRequest(targetUserId) {
+                const db = this.getDatabase();
+                const currentSession = this.checkAuth();
+                if (!currentSession) throw new Error('Требуется авторизация');
+                
+                const targetUser = db.users.find(u => u.id === targetUserId);
+                if (!targetUser) throw new Error('Пользователь не найден');
+                
+                // Проверка, не отправлен ли уже запрос
+                if (targetUser.friendRequests.includes(currentSession.userId)) {
+                    throw new Error('Запрос уже отправлен');
+                }
+                
+                // Проверка, не друзья ли уже
+                if (targetUser.friends.includes(currentSession.userId)) {
+                    throw new Error('Вы уже друзья');
+                }
+                
+                // Добавление запроса
+                targetUser.friendRequests.push(currentSession.userId);
+                this.saveDatabase(db);
+                
+                return { success: true };
+            }
+            
+            // Принять запрос в друзья
+            async acceptFriendRequest(requesterId) {
+                const db = this.getDatabase();
+                const currentSession = this.checkAuth();
+                if (!currentSession) throw new Error('Требуется авторизация');
+                
+                const currentUser = db.users.find(u => u.id === currentSession.userId);
+                const requester = db.users.find(u => u.id === requesterId);
+                
+                if (!currentUser.friendRequests.includes(requesterId)) {
+                    throw new Error('Запрос не найден');
+                }
+                
+                // Удаление из запросов
+                currentUser.friendRequests = currentUser.friendRequests.filter(id => id !== requesterId);
+                
+                // Добавление в друзья
+                currentUser.friends.push(requesterId);
+                requester.friends.push(currentSession.userId);
+                
+                this.saveDatabase(db);
+                
+                return { success: true };
+            }
+            
+            // Удалить из друзей
+            async removeFriend(friendId) {
+                const db = this.getDatabase();
+                const currentSession = this.checkAuth();
+                if (!currentSession) throw new Error('Требуется авторизация');
+                
+                const currentUser = db.users.find(u => u.id === currentSession.userId);
+                const friend = db.users.find(u => u.id === friendId);
+                
+                // Удаление из друзей
+                currentUser.friends = currentUser.friends.filter(id => id !== friendId);
+                friend.friends = friend.friends.filter(id => id !== currentSession.userId);
+                
+                this.saveDatabase(db);
+                
+                return { success: true };
+            }
+            
+            // Создать новый чат
+            async createChat(userId) {
+                const db = this.getDatabase();
+                const currentSession = this.checkAuth();
+                if (!currentSession) throw new Error('Требуется авторизация');
+                
+                const chatId = this.generateChatId();
+                const newChat = {
+                    id: chatId,
+                    participants: [currentSession.userId, userId],
+                    messages: [],
+                    createdAt: new Date().toISOString(),
+                    lastMessage: null
+                };
+                
+                db.messages.push(newChat);
+                this.saveDatabase(db);
+                
+                return {
+                    success: true,
+                    chatId: chatId
+                };
+            }
+            
+            // Вспомогательные методы
+            generateUserId() {
+                return 'usr_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            }
+            
+            generateAccountId() {
+                return Math.floor(1000000000 + Math.random() * 9000000000);
+            }
+            
+            generateToken() {
+                return 'token_' + Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2);
+            }
+            
+            generateChatId() {
+                return 'chat_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+            }
+        }
+
+        // Инициализация API
+        const api = new ServerAPI();
+
+        // DOM элементы
+        const registerForm = document.getElementById('registerForm');
+        const messageContainer = document.getElementById('messageContainer');
+        const passwordInput = document.getElementById('password');
+        const strengthMeter = document.getElementById('strengthMeter');
+        const strengthText = document.getElementById('strengthText');
+        const registerButton = document.getElementById('registerButton');
+        const buttonText = document.getElementById('buttonText');
+        const buttonLoader = document.getElementById('buttonLoader');
+
+        // Проверка сложности пароля
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            let text = 'Введите пароль';
+            let color = '#ff6b9d';
+            
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            switch(strength) {
+                case 0:
+                    text = 'Очень слабый';
+                    color = '#ff6b9d';
+                    break;
+                case 1:
+                    text = 'Слабый';
+                    color = '#ff6b9d';
+                    break;
+                case 2:
+                    text = 'Средний';
+                    color = '#ffa726';
+                    break;
+                case 3:
+                    text = 'Хороший';
+                    color = '#42a5f5';
+                    break;
+                case 4:
+                    text = 'Отличный';
+                    color = '#00ff88';
+                    break;
+            }
+            
+            strengthMeter.style.width = (strength * 25) + '%';
+            strengthMeter.style.backgroundColor = color;
+            strengthText.textContent = text;
+            strengthText.style.color = color;
+        });
+
+        // Показать сообщение
+        function showMessage(text, type = 'info') {
+            messageContainer.innerHTML = `
+                <div class="message ${type}">
+                    ${text}
+                </div>
+            `;
+        }
+
+        // Показать окно входа
+        function showLogin() {
+            showMessage('Форма входа будет доступна в основной версии приложения', 'info');
+        }
+
+        // Проверка даты рождения
+        function isValidBirthDate(date) {
+            const birthDate = new Date(date);
+            const today = new Date();
+            const minAgeDate = new Date();
+            minAgeDate.setFullYear(today.getFullYear() - 13);
+            
+            return birthDate <= minAgeDate;
+        }
+
+        // Обработка формы регистрации
+        registerForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Получение данных формы
+            const userData = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                birthDate: document.getElementById('birthDate').value,
+                gender: document.getElementById('gender').value,
+                email: document.getElementById('email').value.trim(),
+                password: document.getElementById('password').value
+            };
+            
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Валидация
+            if (!userData.firstName || !userData.lastName || !userData.birthDate || 
+                !userData.gender || !userData.email || !userData.password) {
+                showMessage('Заполните все обязательные поля', 'error');
+                return;
+            }
+            
+            if (!isValidBirthDate(userData.birthDate)) {
+                showMessage('Вам должно быть не менее 13 лет для регистрации', 'error');
+                return;
+            }
+            
+            if (userData.password.length < 8) {
+                showMessage('Пароль должен содержать минимум 8 символов', 'error');
+                return;
+            }
+            
+            if (userData.password !== confirmPassword) {
+                showMessage('Пароли не совпадают', 'error');
+                return;
+            }
+            
+            // Проверка email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(userData.email)) {
+                showMessage('Введите корректный email адрес', 'error');
+                return;
+            }
+            
+            // Показать индикатор загрузки
+            buttonText.style.display = 'none';
+            buttonLoader.style.display = 'block';
+            registerButton.disabled = true;
+            
+            try {
+                // Отправка на сервер
+                const result = await api.registerUser(userData);
+                
+                if (result.success) {
+                    showMessage('Регистрация успешна! Создан аккаунт ID: ' + result.user.accountId, 'success');
+                    
+                    // Задержка перед переходом
+                    setTimeout(() => {
+                        // Загружаем основное приложение
+                        loadMainApp();
+                    }, 1500);
+                }
+            } catch (error) {
+                showMessage(error.message, 'error');
+                
+                // Сбросить индикатор загрузки
+                buttonText.style.display = 'block';
+                buttonLoader.style.display = 'none';
+                registerButton.disabled = false;
+            }
+        });
+
+        // Загрузка основного приложения
+        function loadMainApp() {
+            document.querySelector('.register-container').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            
+            // Загружаем основную социальную сеть
+            loadSocialNetwork();
+        }
+
+        // Загрузка основной социальной сети
+        function loadSocialNetwork() {
+            const app = document.getElementById('app');
+            
+            // Проверяем авторизацию
+            const session = api.checkAuth();
+            if (!session) {
+                // Если нет сессии, показываем форму входа
+                showLoginForm();
+                return;
+            }
+            
+            // Загружаем основное приложение
+            app.innerHTML = `
+                <style>
+                    /* Стили основной соцсети */
+                    .social-network {
+                        width: 100%;
+                        min-height: 100vh;
+                        background: var(--dark);
+                    }
+                    
+                    /* Шапка */
+                    .header {
+                        background: rgba(10, 10, 10, 0.95);
+                        backdrop-filter: blur(10px);
+                        padding: 15px 30px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        position: sticky;
+                        top: 0;
+                        z-index: 1000;
+                        border-bottom: 1px solid var(--primary);
+                        box-shadow: 0 5px 20px rgba(138, 43, 226, 0.2);
+                    }
+                    
+                    .header-logo {
+                        font-size: 24px;
+                        font-weight: 800;
+                        background: linear-gradient(90deg, var(--primary), var(--accent));
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        cursor: pointer;
+                    }
+                    
+                    .search-container {
+                        flex: 1;
+                        max-width: 600px;
+                        margin: 0 30px;
+                        position: relative;
+                    }
+                    
+                    .search-input {
+                        width: 100%;
+                        padding: 12px 20px 12px 45px;
+                        background: rgba(255,255,255,0.1);
+                        border: 1px solid var(--gray-light);
+                        border-radius: 25px;
+                        color: var(--light);
+                        font-size: 16px;
+                        transition: all 0.3s;
+                    }
+                    
+                    .search-input:focus {
+                        outline: none;
+                        border-color: var(--primary);
+                        box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+                    }
+                    
+                    .search-icon {
+                        position: absolute;
+                        left: 15px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        color: var(--gray);
+                    }
+                    
+                    .user-menu {
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
+                    }
+                    
+                    .user-avatar {
+                        width: 45px;
+                        height: 45px;
+                        border-radius: 50%;
+                        background: linear-gradient(135deg, var(--primary), var(--accent));
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        cursor: pointer;
+                        font-size: 18px;
+                    }
+                    
+                    /* Основной контент */
+                    .main-content {
+                        display: flex;
+                        min-height: calc(100vh - 80px);
+                    }
+                    
+                    /* Боковая панель */
+                    .sidebar {
+                        width: 280px;
+                        background: var(--dark-card);
+                        border-right: 1px solid var(--gray-light);
+                        padding: 25px;
+                    }
+                    
+                    .nav-menu {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 5px;
+                    }
+                    
+                    .nav-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        padding: 15px 20px;
+                        border-radius: 12px;
+                        color: var(--light);
+                        text-decoration: none;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                    }
+                    
+                    .nav-item:hover {
+                        background: rgba(138, 43, 226, 0.1);
+                    }
+                    
+                    .nav-item.active {
+                        background: linear-gradient(90deg, rgba(138, 43, 226, 0.2), transparent);
+                        color: var(--primary);
+                        border-left: 3px solid var(--primary);
+                    }
+                    
+                    .nav-item i {
+                        width: 24px;
+                        text-align: center;
+                        font-size: 18px;
+                    }
+                    
+                    /* Центральная панель */
+                    .feed {
+                        flex: 1;
+                        padding: 30px;
+                        max-width: 800px;
+                        margin: 0 auto;
+                    }
+                    
+                    /* Карточки */
+                    .card {
+                        background: var(--dark-card);
+                        border-radius: 15px;
+                        padding: 25px;
+                        margin-bottom: 20px;
+                        border: 1px solid var(--gray-light);
+                        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                    }
+                    
+                    .empty-feed {
+                        text-align: center;
+                        padding: 60px 20px;
+                        color: var(--gray);
+                    }
+                    
+                    .empty-icon {
+                        font-size: 60px;
+                        margin-bottom: 20px;
+                        color: var(--primary-light);
+                        opacity: 0.5;
+                    }
+                    
+                    /* Правая панель */
+                    .right-sidebar {
+                        width: 320px;
+                        padding: 30px;
+                    }
+                    
+                    /* Результаты поиска */
+                    .search-results {
+                        position: absolute;
+                        top: 100%;
+                        left: 0;
+                        right: 0;
+                        background: var(--dark-card);
+                        border-radius: 15px;
+                        margin-top: 10px;
+                        padding: 20px;
+                        border: 1px solid var(--gray-light);
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                        max-height: 400px;
+                        overflow-y: auto;
+                        display: none;
+                        z-index: 100;
+                    }
+                    
+                    .search-results.active {
+                        display: block;
+                        animation: fadeIn 0.3s ease;
+                    }
+                    
+                    .search-result-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        padding: 15px;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        transition: background 0.3s;
+                        margin-bottom: 10px;
+                    }
+                    
+                    .search-result-item:hover {
+                        background: rgba(255,255,255,0.05);
+                    }
+                    
+                    .result-avatar {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 50%;
+                        background: linear-gradient(135deg, var(--primary), var(--accent));
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        font-size: 18px;
+                    }
+                    
+                    .result-info {
+                        flex: 1;
+                    }
+                    
+                    .result-name {
+                        font-weight: 600;
+                        color: var(--light);
+                        margin-bottom: 5px;
+                    }
+                    
+                    .result-id {
+                        font-size: 12px;
+                        color: var(--gray);
+                    }
+                    
+                    .result-status {
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                        font-size: 12px;
+                    }
+                    
+                    .online-dot {
+                        width: 8px;
+                        height: 8px;
+                        background: var(--success);
+                        border-radius: 50%;
+                        animation: pulse 2s infinite;
+                    }
+                    
+                    /* Кнопки действий */
+                    .action-buttons {
+                        display: flex;
+                        gap: 10px;
+                        margin-top: 15px;
+                    }
+                    
+                    .action-button {
+                        padding: 8px 15px;
+                        border-radius: 8px;
+                        border: none;
+                        font-size: 14px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                        display: flex;
+                        align-items
+                                                center;
+                        gap: 8px;
+                    }
+                    
+                    .btn-primary {
+                        background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+                        color: white;
+                    }
+                    
+                    .btn-secondary {
+                        background: rgba(255,255,255,0.1);
+                        color: var(--light);
+                        border: 1px solid var(--gray-light);
+                    }
+                    
+                    .btn-danger {
+                        background: rgba(255, 107, 157, 0.2);
+                        color: var(--accent);
+                        border: 1px solid var(--accent);
+                    }
+                    
+                    .action-button:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                    }
+                    
+                    /* Профиль пользователя */
+                    .profile-container {
+                        padding: 30px;
+                        max-width: 1200px;
+                        margin: 0 auto;
+                    }
+                    
+                    .profile-header-card {
+                        background: var(--dark-card);
+                        border-radius: 20px;
+                        margin-bottom: 30px;
+                        overflow: hidden;
+                        border: 1px solid var(--gray-light);
+                    }
+                    
+                    .cover-photo {
+                        height: 200px;
+                        background: linear-gradient(135deg, var(--primary), var(--accent));
+                        position: relative;
+                    }
+                    
+                    .profile-info-section {
+                        padding: 30px;
+                        position: relative;
+                    }
+                    
+                    .profile-avatar-large {
+                        width: 150px;
+                        height: 150px;
+                        border-radius: 50%;
+                        background: linear-gradient(135deg, var(--primary), var(--accent));
+                        position: absolute;
+                        top: -75px;
+                        left: 30px;
+                        border: 5px solid var(--dark-card);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 48px;
+                        font-weight: bold;
+                    }
+                    
+                    .profile-details {
+                        margin-left: 180px;
+                    }
+                    
+                    .profile-name {
+                        font-size: 32px;
+                        margin-bottom: 10px;
+                        color: var(--light);
+                    }
+                    
+                    .profile-stats {
+                        display: flex;
+                        gap: 30px;
+                        margin-top: 20px;
+                    }
+                    
+                    .profile-stat {
+                        text-align: center;
+                    }
+                    
+                    .stat-value {
+                        font-size: 24px;
+                        font-weight: bold;
+                        color: var(--primary);
+                    }
+                    
+                    .stat-label {
+                        font-size: 14px;
+                        color: var(--gray);
+                    }
+                    
+                    /* Чат */
+                    .chat-container {
+                        display: flex;
+                        height: calc(100vh - 80px);
+                    }
+                    
+                    .chat-list {
+                        width: 350px;
+                        background: var(--dark-card);
+                        border-right: 1px solid var(--gray-light);
+                        overflow-y: auto;
+                    }
+                    
+                    .chat-window {
+                        flex: 1;
+                        background: var(--dark);
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    
+                    /* Уведомления */
+                    .notification-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        padding: 15px;
+                        border-radius: 10px;
+                        background: rgba(255,255,255,0.05);
+                        margin-bottom: 10px;
+                        cursor: pointer;
+                        transition: background 0.3s;
+                    }
+                    
+                    .notification-item:hover {
+                        background: rgba(255,255,255,0.08);
+                    }
+                    
+                    /* Адаптивность */
+                    @media (max-width: 1200px) {
+                        .right-sidebar {
+                            display: none;
+                        }
+                    }
+                    
+                    @media (max-width: 768px) {
+                        .sidebar {
+                            display: none;
+                        }
+                        
+                        .search-container {
+                            display: none;
+                        }
+                        
+                        .profile-details {
+                            margin-left: 0;
+                            margin-top: 80px;
+                        }
+                        
+                        .profile-avatar-large {
+                            position: relative;
+                            top: 0;
+                            left: 0;
+                            margin: 0 auto 20px;
+                        }
+                    }
+                </style>
+                
+                <div class="social-network">
+                    <!-- Шапка -->
+                    <div class="header">
+                        <div class="header-logo" onclick="showHomePage()">
+                            <i class="fas fa-dove"></i>
+                            <span>Freedam</span>
+                        </div>
+                        
+                        <div class="search-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="search-input" id="searchInput" placeholder="Поиск людей, групп, каналов...">
+                            <div class="search-results" id="searchResults"></div>
+                        </div>
+                        
+                        <div class="user-menu">
+                            <div class="user-avatar" id="currentUserAvatar" onclick="showUserProfile()">U</div>
+                            <button class="action-button btn-secondary" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Основной контент -->
+                    <div class="main-content">
+                        <!-- Боковая панель -->
+                        <div class="sidebar">
+                            <div class="nav-menu">
+                                <div class="nav-item active" onclick="showHomePage()">
+                                    <i class="fas fa-home"></i>
+                                    <span>Главная</span>
+                                </div>
+                                <div class="nav-item" onclick="showMyProfile()">
+                                    <i class="fas fa-user"></i>
+                                    <span>Мой профиль</span>
+                                </div>
+                                <div class="nav-item" onclick="showFriendsPage()">
+                                    <i class="fas fa-user-friends"></i>
+                                    <span>Друзья</span>
+                                </div>
+                                <div class="nav-item" onclick="showMessagesPage()">
+                                    <i class="fas fa-comment-dots"></i>
+                                    <span>Сообщения</span>
+                                </div>
+                                <div class="nav-item" onclick="showNotificationsPage()">
+                                    <i class="fas fa-bell"></i>
+                                    <span>Уведомления</span>
+                                    <span id="notificationCount" style="margin-left: auto; background: var(--accent); color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px;">0</span>
+                                </div>
+                                <div class="nav-item" onclick="showGroupsPage()">
+                                    <i class="fas fa-users"></i>
+                                    <span>Группы</span>
+                                </div>
+                                <div class="nav-item" onclick="showChannelsPage()">
+                                    <i class="fas fa-broadcast-tower"></i>
+                                    <span>Каналы</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Центральная панель -->
+                        <div class="feed" id="contentArea">
+                            <!-- Контент будет загружаться динамически -->
+                        </div>
+                        
+                        <!-- Правая панель -->
+                        <div class="right-sidebar">
+                            <div class="card">
+                                <h3 style="color: var(--primary); margin-bottom: 20px;">Мои друзья</h3>
+                                <div id="friendsList">
+                                    <!-- Список друзей -->
+                                </div>
+                            </div>
+                            
+                            <div class="card" style="margin-top: 20px;">
+                                <h3 style="color: var(--primary); margin-bottom: 20px;">Рекомендации</h3>
+                                <div id="recommendations">
+                                    <!-- Рекомендации -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Инициализация приложения
+            initSocialNetwork();
+        }
+
+        // Инициализация социальной сети
+        function initSocialNetwork() {
+            // Получаем текущего пользователя
+            const session = api.checkAuth();
+            if (!session) {
+                showLoginForm();
+                return;
+            }
+            
+            // Обновляем аватар текущего пользователя
+            updateCurrentUserAvatar();
+            
+            // Загружаем главную страницу
+            showHomePage();
+            
+            // Инициализируем поиск
+            initSearch();
+            
+            // Загружаем друзей
+            loadFriendsList();
+            
+            // Начинаем обновления в реальном времени
+            startRealtimeUpdates();
+        }
+
+        // Обновить аватар текущего пользователя
+        function updateCurrentUserAvatar() {
+            const session = api.checkAuth();
+            if (session) {
+                // Получаем пользователя из базы данных
+                const db = api.getDatabase();
+                const user = db.users.find(u => u.id === session.userId);
+                if (user) {
+                    const initials = getInitials(user.firstName + ' ' + user.lastName);
+                    document.getElementById('currentUserAvatar').textContent = initials;
+                }
+            }
+        }
+
+        // Получить инициалы
+        function getInitials(name) {
+            return name.split(' ')
+                .map(word => word[0])
+                .join('')
+                .toUpperCase()
+                .substring(0, 2);
+        }
+
+        // Инициализация поиска
+        function initSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                const query = this.value.trim();
+                
+                if (query.length === 0) {
+                    searchResults.classList.remove('active');
+                    return;
+                }
+                
+                searchTimeout = setTimeout(async () => {
+                    try {
+                        const results = await api.searchUsers(query);
+                        displaySearchResults(results.results, query);
+                    } catch (error) {
+                        console.error('Ошибка поиска:', error);
+                    }
+                }, 300);
+            });
+            
+            // Закрытие результатов при клике вне
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                    searchResults.classList.remove('active');
+                }
+            });
+        }
+
+        // Отображение результатов поиска
+        function displaySearchResults(results, query) {
+            const searchResults = document.getElementById('searchResults');
+            
+            if (results.length === 0) {
+                searchResults.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: var(--gray);">
+                        <i class="fas fa-search" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <p>Ничего не найдено по запросу: "${query}"</p>
+                        <p style="font-size: 12px; margin-top: 10px;">Попробуйте поиск по ID аккаунта</p>
+                    </div>
+                `;
+                searchResults.classList.add('active');
+                return;
+            }
+            
+            const resultsHtml = results.map(user => `
+                <div class="search-result-item" onclick="showUserProfilePage('${user.id}')">
+                    <div class="result-avatar">${getInitials(user.firstName + ' ' + user.lastName)}</div>
+                    <div class="result-info">
+                        <div class="result-name">${user.firstName} ${user.lastName}</div>
+                        <div class="result-id">ID: ${user.accountId}</div>
+                        <div class="result-status">
+                            ${user.isOnline ? 
+                                '<div class="online-dot"></div><span style="color: var(--success);">В сети</span>' : 
+                                '<span style="color: var(--gray);">Был(а) ' + formatRelativeTime(user.lastOnline) + '</span>'
+                            }
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            searchResults.innerHTML = `
+                <div style="margin-bottom: 15px; font-weight: 600; color: var(--primary);">
+                    <i class="fas fa-users"></i> Найдено пользователей: ${results.length}
+                </div>
+                ${resultsHtml}
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--gray-light);">
+                    <div class="search-result-item" onclick="searchByAccountId()">
+                        <div class="result-avatar">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="result-info">
+                            <div class="result-name">Поиск по ID аккаунта</div>
+                            <div class="result-id">Найти по номеру ID</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            searchResults.classList.add('active');
+        }
+
+        // Форматирование относительного времени
+        function formatRelativeTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 60) return `${diffMins} мин. назад`;
+            if (diffHours < 24) return `${diffHours} ч. назад`;
+            if (diffDays < 7) return `${diffDays} дн. назад`;
+            
+            return date.toLocaleDateString('ru-RU');
+        }
+
+        // Поиск по ID аккаунта
+        async function searchByAccountId() {
+            const accountId = prompt('Введите ID аккаунта (10 цифр):', '');
+            if (!accountId || !/^\d{10}$/.test(accountId)) {
+                alert('Введите корректный ID аккаунта (10 цифр)');
+                return;
+            }
+            
+            try {
+                const result = await api.searchByAccountId(parseInt(accountId));
+                if (result.success && result.user) {
+                    showUserProfilePage(result.user.id);
+                    document.getElementById('searchResults').classList.remove('active');
+                } else {
+                    alert('Пользователь с таким ID не найден');
+                }
+            } catch (error) {
+                alert('Ошибка поиска: ' + error.message);
+            }
+        }
+
+        // Показать главную страницу (пустая лента)
+        function showHomePage() {
+            updateActiveNav(0);
+            document.getElementById('contentArea').innerHTML = `
+                <div class="card">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <div class="user-avatar" style="width: 50px; height: 50px;">${document.getElementById('currentUserAvatar').textContent}</div>
+                        <input type="text" 
+                               style="flex: 1; padding: 12px 20px; background: rgba(255,255,255,0.1); border: 1px solid var(--gray-light); border-radius: 25px; color: var(--light);"
+                               placeholder="Что у вас нового?" 
+                               id="newPostInput">
+                        <button class="action-button btn-primary" onclick="createPost()">
+                            <i class="fas fa-paper-plane"></i> Опубликовать
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="postsContainer">
+                    <div class="empty-feed">
+                        <div class="empty-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h3 style="color: var(--light); margin-bottom: 10px;">Лента пуста</h3>
+                        <p style="color: var(--gray); margin-bottom: 20px;">Здесь будут появляться посты ваших друзей</p>
+                        <button class="action-button btn-primary" onclick="showFriendsPage()">
+                            <i class="fas fa-user-plus"></i> Найти друзей
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            loadPosts();
+        }
+
+        // Загрузить посты
+        function loadPosts() {
+            const db = api.getDatabase();
+            const session = api.checkAuth();
+            if (!session) return;
+            
+            const posts = db.posts.filter(post => {
+                const user = db.users.find(u => u.id === post.authorId);
+                return user && user.friends.includes(session.userId);
+            }).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            if (posts.length > 0) {
+                document.getElementById('postsContainer').innerHTML = posts.map(post => renderPost(post)).join('');
+            }
+        }
+
+        // Рендеринг поста
+        function renderPost(post) {
+            const db = api.getDatabase();
+            const author = db.users.find(u => u.id === post.authorId);
+            const session = api.checkAuth();
+            
+            if (!author || !session) return '';
+            
+            const isLiked = post.likes && post.likes.includes(session.userId);
+            
+            return `
+                <div class="card" style="margin-top: 20px;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                        <div class="result-avatar" onclick="showUserProfilePage('${author.id}')" style="cursor: pointer;">${getInitials(author.firstName + ' ' + author.lastName)}</div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--light); cursor: pointer;" onclick="showUserProfilePage('${author.id}')">
+                                ${author.firstName} ${author.lastName}
+                            </div>
+                            <div style="font-size: 12px; color: var(--gray);">
+                                ${formatRelativeTime(post.createdAt)}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="color: var(--light); margin-bottom: 15px; line-height: 1.6;">
+                        ${post.content}
+                    </div>
+                    
+                    <div style="display: flex; gap: 20px; border-top: 1px solid var(--gray-light); padding-top: 15px;">
+                        <button class="action-button btn-secondary" onclick="toggleLike('${post.id}')" style="flex: 1;">
+                            <i class="fas fa-heart" style="color: ${isLiked ? 'var(--accent)' : 'var(--gray)'};"></i>
+                            <span>${post.likes?.length || 0}</span>
+                        </button>
+                        <button class="action-button btn-secondary" style="flex: 1;">
+                            <i class="fas fa-comment"></i>
+                            <span>Комментировать</span>
+                        </button>
+                        <button class="action-button btn-secondary" style="flex: 1;">
+                            <i class="fas fa-share"></i>
+                            <span>Поделиться</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Создать пост
+        async function createPost() {
+            const input = document.getElementById('newPostInput');
+            const content = input.value.trim();
+            
+            if (!content) {
+                alert('Введите текст поста');
+                return;
+            }
+            
+            const session = api.checkAuth();
+            if (!session) return;
+            
+            const db = api.getDatabase();
+            const user = db.users.find(u => u.id === session.userId);
+            
+            const newPost = {
+                id: 'post_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                content: content,
+                authorId: session.userId,
+                createdAt: new Date().toISOString(),
+                likes: []
+            };
+            
+            db.posts.push(newPost);
+            api.saveDatabase(db);
+            
+            input.value = '';
+            
+            // Обновляем ленту
+            loadPosts();
+            
+            // Уведомление
+            showNotification('Пост опубликован!');
+        }
+
+        // Лайкнуть пост
+        function toggleLike(postId) {
+            const db = api.getDatabase();
+            const session = api.checkAuth();
+            if (!session) return;
+            
+            const post = db.posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            if (!post.likes) post.likes = [];
+            
+            const likeIndex = post.likes.indexOf(session.userId);
+            if (likeIndex === -1) {
+                post.likes.push(session.userId);
+            } else {
+                post.likes.splice(likeIndex, 1);
+            }
+            
+            api.saveDatabase(db);
+            loadPosts();
+        }
+
+        // Показать мой профиль
+        function showMyProfile() {
+            const session = api.checkAuth();
+            if (!session) return;
+            
+            showUserProfilePage(session.userId);
+        }
+
+        // Показать профиль пользователя
+        async function showUserProfilePage(userId) {
+            updateActiveNav(1);
+            
+            try {
+                const result = await api.getUserProfile(userId);
+                if (result.success) {
+                    displayUserProfile(result.user);
+                }
+            } catch (error) {
+                document.getElementById('contentArea').innerHTML = `
+                    <div class="card">
+                        <div class="empty-feed">
+                            <div class="empty-icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <h3 style="color: var(--light); margin-bottom: 10px;">Ошибка</h3>
+                            <p style="color: var(--gray);">${error.message}</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Отобразить профиль пользователя
+        function displayUserProfile(user) {
+            const session = api.checkAuth();
+            const isMyProfile = session && session.userId === user.id;
+            
+            let actionButtons = '';
+            
+            if (!isMyProfile) {
+                if (user.isFriend) {
+                    actionButtons = `
+                        <button class="action-button btn-danger" onclick="removeFriend('${user.id}')">
+                            <i class="fas fa-user-minus"></i> Удалить из друзей
+                        </button>
+                        <button class="action-button btn-primary" onclick="startChat('${user.id}')">
+                            <i class="fas fa-comment"></i> Написать сообщение
+                        </button>
+                    `;
+                } else if (user.hasFriendRequest) {
+                    actionButtons = `
+                        <button class="action-button btn-primary" onclick="acceptFriendRequest('${user.id}')">
+                            <i class="fas fa-check"></i> Принять заявку в друзья
+                        </button>
+                    `;
+                } else {
+                    actionButtons = `
+                        <button class="action-button btn-primary" onclick="sendFriendRequest('${user.id}')">
+                            <i class="fas fa-user-plus"></i> Добавить в друзья
+                        </button>
+                    `;
+                }
+            } else {
+                actionButtons = `
+                    <button class="action-button btn-primary" onclick="editProfile()">
+                        <i class="fas fa-edit"></i> Редактировать профиль
+                    </button>
+                `;
+            }
+            
+            document.getElementById('contentArea').innerHTML = `
+                <div class="profile-container">
+                    <div class="profile-header-card">
+                        <div class="cover-photo">
+                            ${user.coverPhoto ? 
+                                `<img src="${user.coverPhoto}" style="width: 100%; height: 100%; object-fit: cover;">` : 
+                                ''
+                            }
+                        </div>
+                        <div class="profile-info-section">
+                            <div class="profile-avatar-large">
+                                ${getInitials(user.firstName + ' ' + user.lastName)}
+                            </div>
+                            <div class="profile-details">
+                                <h1 class="profile-name">${user.firstName} ${user.lastName}</h1>
+                                <div style="color: var(--gray); margin-bottom: 10px;">
+                                    <i class="fas fa-id-card"></i> ID аккаунта: ${user.accountId}
+                                </div>
+                                
+                                ${user.city ? `
+                                    <div style="color: var(--gray); margin-bottom: 5px;">
+                                        <i class="fas fa-map-marker-alt"></i> ${user.city}
+                                    </div>
+                                ` : ''}
+                                
+                                ${user.bio ? `
+                                    <div style="color: var(--light); margin-bottom: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                        ${user.bio}
+                                    </div>
+                                ` : ''}
+                                
+                                <div class="action-buttons">
+                                    ${actionButtons}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <div class="stat-value">${user.friendsCount}</div>
+                            <div class="stat-label">Друзей</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="stat-value">${user.postsCount}</div>
+                            <div class="stat-label">Постов</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="stat-value">${user.isOnline ? 'В сети' : 'Не в сети'}</div>
+                            <div class="stat-label">Статус</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="stat-value">${formatDate(user.createdAt)}</div>
+                            <div class="stat-label">На Freedam с</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 30px;">
+                        <h3 style="color: var(--primary); margin-bottom: 20px;">Информация</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                            <div>
+                                <div style="color: var(--gray); font-size: 14px;">Дата рождения</div>
+                                <div style="color: var(--light);">${formatDate(user.birthDate)}</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--gray); font-size: 14px;">Пол</div>
+                                <div style="color: var(--light);">${formatGender(user.gender)}</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--gray); font-size: 14px;">Последний вход</div>
+                                <div style="color: var(--light);">${formatRelativeTime(user.lastOnline)}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Форматировать дату
+        function formatDate(dateString) {
+            if (!dateString) return 'Не указано';
+            return new Date(dateString).toLocaleDateString('ru-RU');
+        }
+
+        // Форматировать пол
+        function formatGender(gender) {
+            switch(gender) {
+                case 'male': return 'Мужской';
+                case 'female': return 'Женский';
+                case 'other': return 'Другой';
+                default: return 'Не указано';
+            }
+        }
+
+        // Отправить запрос в друзья
+        async function sendFriendRequest(userId) {
+            try {
+                await api.sendFriendRequest(userId);
+                showNotification('Запрос в друзья отправлен');
+                showUserProfilePage(userId);
+            } catch (error) {
+                showNotification(error.message, 'error');
+            }
+        }
+
+        // Принять запрос в друзья
+        async function acceptFriendRequest(userId) {
+            try {
+                await api.acceptFriendRequest(userId);
+                showNotification('Заявка в друзья принята');
+                showUserProfilePage(userId);
+                loadFriendsList();
+            } catch (error) {
+                showNotification(error.message, 'error');
+            }
+        }
+
+        // Удалить из друзей
+        async function removeFriend(userId) {
+            if (confirm('Вы действительно хотите удалить этого пользователя из друзей?')) {
+                try {
+                    await api.removeFriend(userId);
+                    showNotification('Пользователь удален из друзей');
+                    showUserProfilePage(userId);
+                    loadFriendsList();
+                } catch (error) {
+                    showNotification(error.message, 'error');
+                }
+            }
+        }
+
+        // Начать чат
+        async function startChat(userId) {
+            try {
+                const result = await api.createChat(userId);
+                showMessagesPage();
+                showNotification('Чат создан');
+            } catch (error) {
+                showNotification(error.message, 'error');
+            }
+        }
+
+        // Загрузить список друзей
+        async function loadFriendsList() {
+            const session = api.checkAuth();
+            if (!session) return;
+            
+            const db = api.getDatabase();
+            const user = db.users.find(u => u.id === session.userId);
+            
+            if (!user || user.friends.length === 0) {
+                document.getElementById('friendsList').innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: var(--gray);">
+                        <i class="fas fa-user-friends" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <p>У вас пока нет друзей</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const friends = db.users.filter(u => user.friends.includes(u.id));
+            const friendsHtml = friends.map(friend => `
+                <div class="search-result-item" onclick="showUserProfilePage('${friend.id}')">
+                    <div class="result-avatar">${getInitials(friend.firstName + ' ' + friend.lastName)}</div>
+                    <div class="result-info">
+                        <div class="result-name">${friend.firstName} ${friend.lastName}</div>
+                        <div class="result-status">
+                            ${friend.isOnline ? 
+                                '<div class="online-dot"></div><span style="color: var(--success);">В сети</span>' : 
+                                '<span style="color: var(--gray);">Был(а) ' + formatRelativeTime(friend.lastOnline) + '</span>'
+                            }
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('friendsList').innerHTML = friendsHtml;
+        }
+
+        // Показать страницу друзей
+        function showFriendsPage() {
+            updateActiveNav(2);
+            document.getElementById('contentArea').innerHTML = `
+                <div class="card">
+                    <h2 style="color: var(--primary); margin-bottom: 20px;">Друзья</h2>
+                    <div id="friendsPageContent">
+                        <!-- Контент друзей -->
+                    </div>
+                </div>
+            `;
+            
+            loadFriendsPageContent();
+        }
+
+        // Загрузить контент страницы друзей
+        function loadFriendsPageContent() {
+            const session = api.checkAuth();
+            if (!session) return;
+            
+            const db = api.getDatabase();
+            const user = db.users.find(u => u.id === session.userId);
+            
+            if (!user) return;
+            
+            // Запросы в друзья
+            const friendRequests = db.users.filter(u => user.friendRequests.includes(u.id));
+            const friends = db.users.filter(u => user.friends.includes(u.id));
+            
+            let content = '';
+            
+            if (friendRequests.length > 0) {
+                content += `
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="color: var(--light); margin-bottom: 15px;">Запросы в друзья (${friendRequests.length})</h3>
+                        ${friendRequests.map(friend => `
+                            <div class="search-result-item" style="margin-bottom: 10px;">
+                                <div class="result-avatar">${getInitials(friend.firstName + ' ' + friend.lastName)}</div>
+                                <div class="result-info">
+                                    <div class="result-name">${friend.firstName} ${friend.lastName}</div>
+                                    <div class="action-buttons" style="margin-top: 10px;">
+                                        <button class="action-button btn-primary" onclick="acceptFriendRequest('${friend.id}')" style="padding: 5px 10px;">
+                                            <i class="fas fa-check"></i> Принять
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            content += `
+                <h3 style="color: var(--light); margin-bottom: 15px;">Все друзья (${friends.length})</h3>
+                ${friends.length > 0 ? 
+                    `<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+                        ${friends.map(friend => `
+                            <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer;" onclick="showUserProfilePage('${friend.id}')">
+                                <div class="result-avatar" style="width: 60px; height: 60px; margin: 0 auto 10px;">${getInitials(friend.firstName + ' ' + friend.lastName)}</div>
+                                <div style="text-align: center;">
+                                    <div style="font-weight: 600; color: var(--light); margin-bottom: 5px;">${friend.firstName} ${friend.lastName}</div>
+                                    <div style="font-size: 12px; color: ${friend.isOnline ? 'var(--success)' : 'var(--gray)'};">
+                                        ${friend.isOnline ? 'В сети' : 'Не в сети'}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>` : 
+                    '<p style="color: var(--gray); text-align: center; padding: 40px;">У вас пока нет друзей</p>'
+                }
+            `;
+            
+            document.getElementById('friendsPageContent').innerHTML = content;
+        }
+
+        // Показать страницу сообщений
+        function showMessagesPage() {
+            updateActiveNav(3);
+            document.getElementById('contentArea').innerHTML = `
+                <div class="chat-container">
+                    <div class="chat-list">
+                        <div style="padding: 20px; border-bottom: 1px solid var(--gray-light);">
+                            <h3 style="color: var(--primary);">Сообщения</h3>
+                        </div>
+                        <div id="chatListContent" style="padding: 20px;">
+                            <!-- Список чатов -->
+                        </div>
+                    </div>
+                    <div class="chat-window">
+                        <div style="padding: 20px; border-bottom: 1px solid var(--gray-light); text-align: center; color: var(--gray);">
+                            <i class="fas fa-comments" style="font-size: 48px; margin-bottom: 10px;"></i>
+                            <h3>Выберите чат для общения</h3>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            loadChats();
+        }
+
+        // Загрузить чаты
+        function loadChats() {
+            const session = api.checkAuth();
+            if (!session) return;
+            
+            const db = api.getDatabase();
+            const userChats = db.messages.filter(chat => chat.participants.includes(session.userId));
+            
+            if (userChats.length === 0) {
+                document.getElementById('chatListContent').innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--gray);">
+                        <i class="fas fa-comment-slash" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>У вас пока нет сообщений</p>
+                        <button class="action-button btn-primary" onclick="showFriendsPage()" style="margin-top: 15px;">
+                            <i class="fas fa-user-plus"></i> Найти друзей
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Здесь можно добавить отображение списка чатов
+        }
+
+        // Показать страницу уведомлений
+        function showNotificationsPage() {
+            updateActiveNav(4);
+            document.getElementById('contentArea').innerHTML = `
+                <div class="card">
+                    <h2 style="color: var(--primary); margin-bottom: 20px;">Уведомления</h2>
+                    <div id="notificationsList
+                                            <!-- Уведомления будут здесь -->
+                    </div>
+                </div>
+            `;
+            
+            loadNotifications();
+        }
+
+        // Загрузить уведомления
+        function loadNotifications() {
+            const session = api.checkAuth();
+            if (!session) return;
+            
+            const db = api.getDatabase();
+            const notifications = db.messages.filter(msg => 
+                msg.type === 'notification' && msg.userId === session.userId
+            );
+            
+            if (notifications.length === 0) {
+                document.getElementById('notificationsList').innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--gray);">
+                        <i class="fas fa-bell-slash" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>У вас нет уведомлений</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const notificationsHtml = notifications.map(notification => `
+                <div class="notification-item">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white;">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; color: var(--light);">${notification.title || 'Уведомление'}</div>
+                        <div style="color: var(--gray); font-size: 14px;">${notification.content || ''}</div>
+                        <div style="color: var(--gray); font-size: 12px; margin-top: 5px;">${formatRelativeTime(notification.createdAt)}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('notificationsList').innerHTML = notificationsHtml;
+        }
+
+        // Показать страницу групп
+        function showGroupsPage() {
+            updateActiveNav(5);
+            document.getElementById('contentArea').innerHTML = `
+                <div class="card">
+                    <h2 style="color: var(--primary); margin-bottom: 20px;">Группы</h2>
+                    <div style="text-align: center; padding: 40px; color: var(--gray);">
+                        <i class="fas fa-users" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>Функция групп в разработке</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Показать страницу каналов
+        function showChannelsPage() {
+            updateActiveNav(6);
+            document.getElementById('contentArea').innerHTML = `
+                <div class="card">
+                    <h2 style="color: var(--primary); margin-bottom: 20px;">Каналы</h2>
+                    <div style="text-align: center; padding: 40px; color: var(--gray);">
+                        <i class="fas fa-broadcast-tower" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>Функция каналов в разработке</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Обновить активную навигацию
+        function updateActiveNav(index) {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach((item, i) => {
+                if (i === index) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // Показать профиль пользователя
+        function showUserProfile() {
+            showMyProfile();
+        }
+
+        // Редактировать профиль
+        function editProfile() {
+            const session = api.checkAuth();
+            if (!session) return;
+            
+            const db = api.getDatabase();
+            const user = db.users.find(u => u.id === session.userId);
+            
+            const newCity = prompt('Введите ваш город:', user.city || '');
+            const newBio = prompt('Расскажите о себе:', user.bio || '');
+            
+            if (newCity !== null || newBio !== null) {
+                const updates = {};
+                if (newCity !== null) updates.city = newCity;
+                if (newBio !== null) updates.bio = newBio;
+                
+                // В реальном приложении здесь был бы запрос к API
+                Object.assign(user, updates);
+                api.saveDatabase(db);
+                showMyProfile();
+                showNotification('Профиль обновлен');
+            }
+        }
+
+        // Показать уведомление
+        function showNotification(message, type = 'success') {
+            // Создаем элемент уведомления
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--accent)' : 'var(--primary)'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                z-index: 10000;
+                animation: fadeIn 0.3s ease;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Удаляем уведомление через 3 секунды
+            setTimeout(() => {
+                notification.style.animation = 'fadeIn 0.3s ease reverse';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Обновления в реальном времени
+        function startRealtimeUpdates() {
+            // Обновляем статус онлайн каждые 30 секунд
+            setInterval(() => {
+                const session = api.checkAuth();
+                if (session) {
+                    const db = api.getDatabase();
+                    const user = db.users.find(u => u.id === session.userId);
+                    if (user) {
+                        user.isOnline = true;
+                        user.lastOnline = new Date().toISOString();
+                        api.saveDatabase(db);
+                    }
+                }
+            }, 30000);
+            
+            // Симулируем новые уведомления
+            setInterval(() => {
+                const session = api.checkAuth();
+                if (session && Math.random() > 0.8) {
+                    const db = api.getDatabase();
+                    const notifications = [
+                        'У вас новое предложение дружбы',
+                        'Ваш пост получил новый лайк',
+                        'Новое сообщение от друга',
+                        'Обновление системы: добавлены новые функции',
+                        'У вас запрос на вступление в группу'
+                    ];
+                    
+                    const randomNotification = notifications[Math.floor(Math.random() * notifications.length)];
+                    
+                    // Добавляем уведомление в базу
+                    const newNotification = {
+                        id: 'notif_' + Date.now(),
+                        type: 'notification',
+                        userId: session.userId,
+                        title: 'Новое уведомление',
+                        content: randomNotification,
+                        createdAt: new Date().toISOString(),
+                        read: false
+                    };
+                    
+                    if (!db.messages) db.messages = [];
+                    db.messages.push(newNotification);
+                    api.saveDatabase(db);
+                    
+                    // Обновляем счетчик уведомлений
+                    updateNotificationCount();
+                    
+                    // Если открыта страница уведомлений, обновляем ее
+                    if (document.querySelector('.nav-item:nth-child(5)').classList.contains('active')) {
+                        loadNotifications();
+                    }
+                }
+            }, 60000); // Каждую минуту
+        }
+
+        // Обновить счетчик уведомлений
+        function updateNotificationCount() {
+            const session = api.checkAuth();
+            if (!session) return;
+            
+            const db = api.getDatabase();
+            const notifications = db.messages.filter(msg => 
+                msg.type === 'notification' && 
+                msg.userId === session.userId && 
+                !msg.read
+            );
+            
+            const notificationCount = document.getElementById('notificationCount');
+            if (notifications.length > 0) {
+                notificationCount.textContent = notifications.length;
+                notificationCount.style.display = 'inline-block';
+            } else {
+                notificationCount.style.display = 'none';
+            }
+        }
+
+        // Показать форму входа
+        function showLoginForm() {
+            document.getElementById('app').innerHTML = `
+                <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+                    <div class="register-card" style="max-width: 400px;">
+                        <div class="register-header">
+                            <div class="logo">
+                                <i class="fas fa-dove"></i>
+                                <span>Freedam</span>
+                            </div>
+                            <p class="register-subtitle">Вход в аккаунт</p>
+                        </div>
+                        
+                        <div id="loginMessageContainer"></div>
+                        
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label class="form-label">Электронная почта</label>
+                                <input type="email" class="form-input" id="loginEmail" placeholder="example@mail.com" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Пароль</label>
+                                <input type="password" class="form-input" id="loginPassword" placeholder="Ваш пароль" required>
+                            </div>
+                            
+                            <button type="submit" class="form-button">
+                                Войти в аккаунт
+                            </button>
+                        </form>
+                        
+                        <div class="login-link">
+                            Нет аккаунта? <a href="#" onclick="showRegisterForm()">Зарегистрироваться</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Обработка формы входа
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value;
+                
+                try {
+                    const result = await api.loginUser(email, password);
+                    if (result.success) {
+                        showNotification('Вход выполнен успешно!');
+                        loadSocialNetwork();
+                    }
+                } catch (error) {
+                    document.getElementById('loginMessageContainer').innerHTML = `
+                        <div class="message error">
+                            ${error.message}
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        // Показать форму регистрации
+        function showRegisterForm() {
+            document.getElementById('app').innerHTML = `
+                <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+                    ${document.querySelector('.register-container').innerHTML}
+                </div>
+            `;
+            
+            // Восстанавливаем обработчики событий
+            initRegistrationForm();
+        }
+
+        // Выйти из аккаунта
+        async function logout() {
+            if (confirm('Вы действительно хотите выйти?')) {
+                await api.logout();
+                showLoginForm();
+                showNotification('Вы вышли из аккаунта');
+            }
+        }
+
+        // Инициализация при загрузке страницы
+        window.addEventListener('DOMContentLoaded', function() {
+            // Проверяем, есть ли активная сессия
+            const session = api.checkAuth();
+            
+            if (session) {
+                // Если пользователь уже авторизован, загружаем соцсеть
+                loadMainApp();
+            }
+            // Если нет сессии, остается форма регистрации
+        });
+
+        // Добавляем обработчики клавиш для поиска
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    searchInput.focus();
+                }
+            }
+            
+            if (e.key === 'Escape') {
+                const searchResults = document.getElementById('searchResults');
+                if (searchResults) {
+                    searchResults.classList.remove('active');
+                }
+            }
+        });
+
+        // Инициализация счетчика уведомлений при загрузке
+        setTimeout(() => {
+            updateNotificationCount();
+        }, 1000);
+
+        // Функция для тестирования
+        function createTestUsers() {
+            const db = api.getDatabase();
+            
+            // Создаем тестовых пользователей, если их нет
+            if (db.users.length < 3) {
+                const testUsers = [
+                    {
+                        firstName: 'Анна',
+                        lastName: 'Смирнова',
+                        email: 'anna@test.com',
+                        password: 'password123',
+                        birthDate: '1995-03-15',
+                        gender: 'female',
+                        city: 'Москва',
+                        bio: 'Люблю путешествия и фотографию'
+                    },
+                    {
+                        firstName: 'Дмитрий',
+                        lastName: 'Петров',
+                        email: 'dmitry@test.com',
+                        password: 'password123',
+                        birthDate: '1990-07-22',
+                        gender: 'male',
+                        city: 'Санкт-Петербург',
+                        bio: 'Программист, увлекаюсь технологиями'
+                    },
+                    {
+                        firstName: 'Екатерина',
+                        lastName: 'Иванова',
+                        email: 'ekaterina@test.com',
+                        password: 'password123',
+                        birthDate: '1998-11-05',
+                        gender: 'female',
+                        city: 'Казань',
+                        bio: 'Студентка, люблю искусство и музыку'
+                    }
+                ];
+                
+                testUsers.forEach(userData => {
+                    const userId = 'usr_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    const accountId = Math.floor(1000000000 + Math.random() * 9000000000);
+                    
+                    const newUser = {
+                        id: userId,
+                        accountId: accountId,
+                        ...userData,
+                        createdAt: new Date().toISOString(),
+                        lastOnline: new Date().toISOString(),
+                        isOnline: Math.random() > 0.5,
+                        avatar: '',
+                        coverPhoto: '',
+                        friends: [],
+                        friendRequests: [],
+                        posts: [],
+                        groups: [],
+                        channels: [],
+                        privacy: {
+                            profile: 'public',
+                            friends: 'public',
+                            posts: 'public'
+                        }
+                    };
+                    
+                    db.users.push(newUser);
+                });
+                
+                api.saveDatabase(db);
+                console.log('Созданы тестовые пользователи');
+            }
+        }
+
+        // Создаем тестовых пользователей при загрузке
+        setTimeout(createTestUsers, 2000);
+    </script>
+</body>
+</html>
